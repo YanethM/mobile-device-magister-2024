@@ -1,5 +1,4 @@
 // Archivo encargado de generar la conexión con la base de datos de mongo 
-
 const mongoose = require("mongoose");
 const app = require("./app");
 

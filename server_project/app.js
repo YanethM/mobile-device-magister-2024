@@ -1,5 +1,4 @@
 // Archivo encargado de generar las rutas del proyecto
-
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -16,9 +15,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use(cors());
-
 // Rutas
-// http:localhost:3000/api/v1/users/new-user
+// http://localhost:3000/api/v1/users/new-user
 app.use(`${API_VERSION}/users`, user_routes);
 
 module.exports = app;
