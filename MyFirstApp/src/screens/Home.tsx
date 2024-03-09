@@ -1,7 +1,9 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
+import axios from "axios";
 import React, { useEffect, useMemo, useState } from "react";
 import {
+  Alert,
   Image,
   Modal,
   Pressable,
@@ -13,7 +15,7 @@ import {
 import { RadioGroup } from "react-native-radio-buttons-group";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export const Home = () => {
+export const Home = ({ navigation }) => {
   // Declaración de variables y métodos para modificar su valor inicial
   const [visibleModal, setVisibleModal] = useState(false);
   const [departments, setDepartments] = useState([]);
@@ -68,10 +70,33 @@ export const Home = () => {
   };
 
   const handleDataForm = () => {
-    console.log(selectedIdRadioButton);
-    console.log(departmentSelected);
-    console.log(userName);
-    console.log(userEmail);
+    fetch("http://192.168.0.11:3000/api/v1/users/new-user", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_name: userName,
+        user_email: userEmail,
+        gender: selectedIdRadioButton,
+        address: departmentSelected,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        Alert.alert(
+          "Registro Exitoso",
+          "¡Bienvenido! Por favor, inicia sesión para continuar."
+        );
+        navigation.navigate("Home");
+      })
+      .catch((error) => {
+        console.log(error);
+        Alert.alert("Error", error.message);
+        navigation.navigate("Home");
+      });
   };
 
   return (

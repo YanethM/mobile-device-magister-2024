@@ -3,7 +3,7 @@ const userModel = require("../models/user_model");
 const createUser = async (req, res) => {
   try {
     const { user_name, user_email, gender, address } = req.body;
-
+    console.log("ESTOY EN EL CONTROLADOR");
     const newUser = new userModel({
       user_name,
       user_email,
