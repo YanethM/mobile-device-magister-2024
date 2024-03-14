@@ -1,33 +1,28 @@
 import React from "react";
 import { Text, StyleSheet, SafeAreaView, View } from "react-native";
-import { RootStackScreenProps } from "../navigators/MainNavigator";
 import { INTRO_SCREEN_01 } from "../utils/constants";
-import { ScreenIndicators } from "../components/ScreenIndicators";
 import PrimaryButton from "../components/PrimaryButton";
+import { ScreenIndicators } from "../components/ScreenIndicators";
 
-export const Onboarding1 = ({
-  navigation,
-}: RootStackScreenProps<"Onboarding1">) => {
+export const Onboarding1 = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <SafeAreaView>
-        <View style={styles.textSlide}>
-          <Text>{INTRO_SCREEN_01.title}</Text>
-          <Text>{INTRO_SCREEN_01.description}</Text>
-        </View>
-        <View style={styles.buttonContainer}>
-          <PrimaryButton
-            label="Next"
-            onPress={() => navigation.replace("Onboarding2")}
-            style={styles.nextButton}
-          />
-        </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.textSlide}>
+        <Text>{INTRO_SCREEN_01.title}</Text>
+        <Text>{INTRO_SCREEN_01.description}</Text>
+      </View>
+      <View style={styles.buttonContainer}>
+        <PrimaryButton
+          label="Next"
+          onPress={() => navigation.navigate("Onboarding2")}
+          style={styles.nextButton}
+        />
         <ScreenIndicators
           count={3}
-          activeIndex={0}
+          activeIndex={1}
         />
-      </SafeAreaView>
-    </View>
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -51,8 +46,5 @@ const styles = StyleSheet.create({
   nextButton: {
     flex: 1,
     marginHorizontal: 5,
-  },
-  indicators: {
-    marginBottom: 10,
   },
 });

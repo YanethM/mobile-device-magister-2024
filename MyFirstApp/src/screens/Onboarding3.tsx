@@ -1,41 +1,36 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { ScreenIndicators } from "../components/ScreenIndicators";
+import { Text, StyleSheet, SafeAreaView, View } from "react-native";
+import { INTRO_SCREEN_01, INTRO_SCREEN_03 } from "../utils/constants";
 import PrimaryButton from "../components/PrimaryButton";
-import { RootStackScreenProps } from "../navigators/MainNavigator";
-import { INTRO_SCREEN_03 } from "../utils/constants";
+import { ScreenIndicators } from "../components/ScreenIndicators";
 
-export const Onboarding3 = ({
-  navigation,
-}: RootStackScreenProps<"Onboarding3">) => {
+export const Onboarding3 = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <SafeAreaView>
-        <View style={styles.textSlide}>
-          <Text>{INTRO_SCREEN_03.title}</Text>
-          <Text>{INTRO_SCREEN_03.description}</Text>
-        </View>
-        <View style={styles.buttonContainer}>
-          <PrimaryButton
-            label="Back"
-            onPress={() => navigation.replace("Onboarding1")}
-            style={styles.backButton}
-          />
-          <PrimaryButton
-            label="Next"
-            onPress={() => navigation.replace("Home")}
-            style={styles.nextButton}
-          />
-        </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.textSlide}>
+        <Text>{INTRO_SCREEN_03.title}</Text>
+        <Text>{INTRO_SCREEN_03.description}</Text>
+      </View>
+      <View style={styles.buttonContainer}>
+        <PrimaryButton
+          label="Next"
+          onPress={() => navigation.navigate("TabNavigator")}
+          style={styles.nextButton}
+        />
+        <PrimaryButton
+          label="Back"
+          onPress={() => navigation.navigate("Onboarding2")}
+          style={styles.nextButton}
+        />
         <ScreenIndicators
           count={3}
           activeIndex={1}
         />
-      </SafeAreaView>
-    </View>
+      </View>
+    </SafeAreaView>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -53,12 +48,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginBottom: 20,
   },
-  backButton: {
-    flex: 1,
-    marginRight: 5,
-  },
   nextButton: {
     flex: 1,
-    marginLeft: 5,
+    marginHorizontal: 5,
   },
 });

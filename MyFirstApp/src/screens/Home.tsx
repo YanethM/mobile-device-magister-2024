@@ -14,6 +14,8 @@ import {
 } from "react-native";
 import { RadioGroup } from "react-native-radio-buttons-group";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Navigation from "../../Navigation";
+
 
 export const Home = ({ navigation }) => {
   // Declaración de variables y métodos para modificar su valor inicial
@@ -114,6 +116,7 @@ export const Home = ({ navigation }) => {
               color="black"
             />
           </Pressable>
+          <Navigation />
         </View>
 
         <Modal
