@@ -1,6 +1,5 @@
 import React from "react";
 import { SafeAreaView, StyleSheet } from "react-native";
-import { MainNavigator } from "./src/navigators/MainNavigator";
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 import Navigation from "./Navigation";
