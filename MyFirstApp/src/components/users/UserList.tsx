@@ -1,39 +1,61 @@
 import React from "react";
-import { FlatList, Text } from "react-native";
+import { FlatList, StyleSheet, Text } from "react-native";
 import { Avatar, ListItem } from "react-native-elements";
 
-export const UserList = ({ users }) => {
-  const BASE_URL = "http://localhost:3000";
-  const UPLOADS_FOLDER = "uploads/users";
+// Constants
+const BASE_URL = "http://192.168.1.9:3000";
+const UPLOADS_FOLDER = "uploads/users";
+const AVATAR_FALLBACK_URL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-SnDtnoTbs_JJtNW62ALeA4gKPtpCGcQ5CnVEJNNAddxjuLwrbo1c16rExrxYL4xLmIw&usqp=CAU";
 
-  const renderItem = ({ item }) => (
-    <>
-      {console.log(`${BASE_URL}/${UPLOADS_FOLDER}/${item.avatar}`)}
-      <ListItem bottomDivider>
-        <Avatar
-          rounded
-          source={{
-            uri: item.avatar
-              ? `${BASE_URL}/${UPLOADS_FOLDER}/${item.avatar}`
-              : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-SnDtnoTbs_JJtNW62ALeA4gKPtpCGcQ5CnVEJNNAddxjuLwrbo1c16rExrxYL4xLmIw&usqp=CAU",
-          }}
-        />
-        <ListItem.Content>
-          <ListItem.Title>{item.user_name}</ListItem.Title>
-          <ListItem.Subtitle>{item.user_email}</ListItem.Subtitle>
-          {item.nacionality && (
-            <ListItem.Subtitle>{item.nacionality}</ListItem.Subtitle>
-          )}
-        </ListItem.Content>
-      </ListItem>
-    </>
+// Component
+export const UserList = ({ users }) => {
+
+  const renderUserItem = ({ item }) => (
+    <ListItem bottomDivider style={styles.listItem}>
+      <Avatar
+        rounded
+        size={60}
+        source={{
+          uri: item.avatar ? `${BASE_URL}/${UPLOADS_FOLDER}/${item.avatar}` : AVATAR_FALLBACK_URL,
+        }}
+      />
+      <ListItem.Content>
+        <ListItem.Title style={styles.title}>{item.user_name}</ListItem.Title>
+        <ListItem.Subtitle style={styles.subtitle}>{item.user_email}</ListItem.Subtitle>
+        {item.user_role && <ListItem.Subtitle>{item.user_role}</ListItem.Subtitle>}
+      </ListItem.Content>
+    </ListItem>
   );
 
   return (
     <FlatList
       data={users}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id}
+      renderItem={renderUserItem}
+      keyExtractor={(item) => item._id}
+      style={styles.container}
     />
   );
 };
+
+// Styles
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  listItem: {
+    marginHorizontal: 10,
+    marginVertical: 5,
+    borderRadius: 5,
+    padding: 10,
+    width: "95%",
+    height: 100,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  subtitle: {
+    fontSize: 16,
+  }
+});

@@ -13,6 +13,7 @@ const user_routes = require("./routes/user_routes");
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(express.static("uploads"));
 
 app.use(cors());
 // Rutas

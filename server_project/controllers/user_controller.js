@@ -12,6 +12,7 @@ const createUser = async (req, res) => {
       active,
     } = req.body;
 
+    console.log(req.file);
     const avatar = req.file ? req.file.filename : null;
     console.log(avatar);
 
@@ -30,6 +31,7 @@ const createUser = async (req, res) => {
     console.log(userSaved);
     res.status(201).json({ message: "User created", userSaved });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Error creating user" });
   }
 };
