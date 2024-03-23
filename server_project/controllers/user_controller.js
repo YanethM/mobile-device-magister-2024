@@ -45,4 +45,39 @@ const getUsers = async (req, res) => {
   }
 };
 
-module.exports = { createUser, getUsers };
+const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const user = await userModel.findById(id);
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Error getting user" });
+  }
+};
+
+const updateUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { user_name, user_email, gender, address, user_role, active } =
+      req.body;
+    const updateUser = {};
+
+    if (req.file) updateUser.avatar = req.file.filename;
+
+    updateUser.user_name = user_name;
+    updateUser.user_email = user_email;
+    updateUser.gender = gender;
+    updateUser.address = address;
+    updateUser.user_role = user_role;
+    updateUser.active = active;
+
+    const user = await userModel.findByIdAndUpdate(id, updateUser);
+    console.log(user);
+    res.status(200).json({ message: "User updated", user });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating user" });
+  }
+};
+
+module.exports = { createUser, getUsers, getUserById, updateUserById };

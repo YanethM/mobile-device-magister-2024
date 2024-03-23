@@ -15,6 +15,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static("uploads"));
 
+
 app.use(cors());
 // Rutas
 // http://localhost:3000/api/v1/users/new-user

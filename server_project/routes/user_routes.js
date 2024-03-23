@@ -19,5 +19,9 @@ const upload = multer({ storage: storage });
 router.post("/new-user", upload.single("avatar"), userController.createUser);
 // http:localhost:3000/api/v1/users
 router.get("/", userController.getUsers);
+// http:localhost:3000/api/v1/users/id
+router.get("/:id", userController.getUserById);
+// http:localhost:3000/api/v1/users/edit/id
+router.patch("/edit/:id", upload.single("avatar"), userController.updateUserById);
 
 module.exports = router;

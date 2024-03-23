@@ -4,7 +4,7 @@ import { Avatar, ListItem } from "react-native-elements";
 
 // Constants
 const BASE_URL = "http://192.168.1.9:3002";
-const UPLOADS_FOLDER = "uploads/users";
+const UPLOADS_FOLDER = "users";
 const AVATAR_FALLBACK_URL =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-SnDtnoTbs_JJtNW62ALeA4gKPtpCGcQ5CnVEJNNAddxjuLwrbo1c16rExrxYL4xLmIw&usqp=CAU";
 
