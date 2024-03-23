@@ -15,7 +15,6 @@ export const HomeScreen = () => {
     try {
       setIsLoading(true);
       const response = await client.get("/users");
-      console.log(response);
       setUsers(response.data);
     } catch (error) {
       console.log("Error", error);

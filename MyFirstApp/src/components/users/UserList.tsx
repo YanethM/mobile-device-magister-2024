@@ -104,6 +104,13 @@ export const UserList = ({ users }) => {
             color="black"
           />
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => handleDetailUser(item._id)}>
+          <Ionicons
+            name="pencil-outline"
+            size={22}
+            color="black"
+          />
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => handleDeleteUser(item._id)}>
           <Ionicons
             name="trash-outline"
@@ -125,7 +132,7 @@ export const UserList = ({ users }) => {
       />
       <UserDetailModal
         visible={modalVisible}
-        closeModal={setModalVisible}
+        closeModal={() => setModalVisible(false)}
         userId={selectUserId}
       />
     </>
