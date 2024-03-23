@@ -3,26 +3,35 @@ import { FlatList, StyleSheet, Text } from "react-native";
 import { Avatar, ListItem } from "react-native-elements";
 
 // Constants
-const BASE_URL = "http://192.168.1.9:3000";
+const BASE_URL = "http://192.168.1.9:3002";
 const UPLOADS_FOLDER = "uploads/users";
-const AVATAR_FALLBACK_URL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-SnDtnoTbs_JJtNW62ALeA4gKPtpCGcQ5CnVEJNNAddxjuLwrbo1c16rExrxYL4xLmIw&usqp=CAU";
+const AVATAR_FALLBACK_URL =
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-SnDtnoTbs_JJtNW62ALeA4gKPtpCGcQ5CnVEJNNAddxjuLwrbo1c16rExrxYL4xLmIw&usqp=CAU";
 
 // Component
 export const UserList = ({ users }) => {
-
   const renderUserItem = ({ item }) => (
-    <ListItem bottomDivider style={styles.listItem}>
+    <ListItem
+      bottomDivider
+      style={styles.listItem}
+    >
       <Avatar
         rounded
         size={60}
         source={{
-          uri: item.avatar ? `${BASE_URL}/${UPLOADS_FOLDER}/${item.avatar}` : AVATAR_FALLBACK_URL,
+          uri: item.avatar
+            ? `${BASE_URL}/${UPLOADS_FOLDER}/${item.avatar}`
+            : AVATAR_FALLBACK_URL,
         }}
       />
-      <ListItem.Content>
+      <ListItem.Content style={styles.content}>
         <ListItem.Title style={styles.title}>{item.user_name}</ListItem.Title>
-        <ListItem.Subtitle style={styles.subtitle}>{item.user_email}</ListItem.Subtitle>
-        {item.user_role && <ListItem.Subtitle>{item.user_role}</ListItem.Subtitle>}
+        <ListItem.Subtitle style={styles.subtitle}>
+          {item.user_email}
+        </ListItem.Subtitle>
+        {item.user_role && (
+          <ListItem.Subtitle>{item.user_role}</ListItem.Subtitle>
+        )}
       </ListItem.Content>
     </ListItem>
   );
@@ -51,11 +60,16 @@ const styles = StyleSheet.create({
     width: "95%",
     height: 100,
   },
+  content: {
+    marginLeft: 10,
+  },
+
   title: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
   },
   subtitle: {
-    fontSize: 16,
-  }
+    fontSize: 12,
+    color: "gray",
+  },
 });
