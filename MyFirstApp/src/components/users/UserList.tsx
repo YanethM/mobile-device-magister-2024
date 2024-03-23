@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, Switch, Text, View } from "react-native";
+import { Alert, FlatList, StyleSheet, Switch, Text, View } from "react-native";
 import { Avatar, ListItem } from "react-native-elements";
 import client from "../../../api/client";
+import { TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { UserDetailModal } from "./UserDetailModal";
 
 // Constants
 const BASE_URL = "http://192.168.1.9:3002";
@@ -12,6 +15,8 @@ const AVATAR_FALLBACK_URL =
 // Component
 export const UserList = ({ users }) => {
   const [userSwitchState, setUserSwitchState] = useState({});
+  const [selectUserId, setSelectUserId] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     const initialSwitchState = {};
@@ -22,18 +27,38 @@ export const UserList = ({ users }) => {
   }, [users]);
 
   const toggleSwitch = async (userId) => {
-    console.log("userId", userId);
-    if (typeof userId === "string" && userId.length > 0) {
-      setUserSwitchState((prevState) => ({
-        ...prevState,
-        [userId]: !prevState[userId],
-      }));
-      await client.patch(`/users/edit/${userId}`, {
-        active: !userSwitchState[userId],
-      });
-    } else {
-      console.log("Error al cambiar el estado del usuario");
-    }
+    Alert.alert(
+      "Confirmar cambio estado",
+      "¿Estás seguro de cambiar el estado del usuario?",
+      [
+        {
+          text: "Cancelar",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "Cambiar",
+          onPress: async () => {
+            if (typeof userId === "string" && userId.length > 0) {
+              setUserSwitchState((prevState) => ({
+                ...prevState,
+                [userId]: !prevState[userId],
+              }));
+              await client.patch(`/users/edit/${userId}`, {
+                active: !userSwitchState[userId],
+              });
+            } else {
+              console.log("Error al cambiar el estado del usuario");
+            }
+          },
+        },
+      ]
+    );
+  };
+
+  const handleDetailUser = async (userId) => {
+    setSelectUserId(userId);
+    setModalVisible(true);
   };
 
   const renderUserItem = ({ item }) => (
@@ -59,6 +84,7 @@ export const UserList = ({ users }) => {
           <ListItem.Subtitle>{item.user_role}</ListItem.Subtitle>
         )}
       </ListItem.Content>
+
       <View style={styles.switchContainer}>
         <Switch
           trackColor={{ false: "#767577", true: "#767577" }}
@@ -68,16 +94,40 @@ export const UserList = ({ users }) => {
           value={userSwitchState[item._id]}
         />
       </View>
+
+      <View style={styles.actionsContainer}>
+        <TouchableOpacity onPress={() => handleDetailUser(item._id)}>
+          <Ionicons
+            name="search-outline"
+            size={22}
+            color="black"
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => handleDeleteUser(item._id)}>
+          <Ionicons
+            name="trash-outline"
+            size={22}
+            color="black"
+          />
+        </TouchableOpacity>
+      </View>
     </ListItem>
   );
 
   return (
-    <FlatList
-      data={users}
-      renderItem={renderUserItem}
-      keyExtractor={(item) => item._id}
-      style={styles.container}
-    />
+    <View>
+      <FlatList
+        data={users}
+        renderItem={renderUserItem}
+        keyExtractor={(item) => item._id}
+        style={styles.container}
+      />
+      <UserDetailModal
+        visible={modalVisible}
+        closeModal={() => setModalVisible(false)}
+        userId={selectUserId}
+      />
+    </View>
   );
 };
 
@@ -109,5 +159,12 @@ const styles = StyleSheet.create({
   },
   switchContainer: {
     alignSelf: "center", // Centra el switch horizontalmente
+  },
+  actionsContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: 60,
+    marginRight: 5,
   },
 });
