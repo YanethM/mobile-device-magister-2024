@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Alert, FlatList, StyleSheet, Switch, Text, View } from "react-native";
 import { Avatar, ListItem } from "react-native-elements";
 import client from "../../../api/client";
 import { TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { UserDetailModal } from "./UserDetailModal";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
 // Constants
 const BASE_URL = "http://192.168.1.9:3002";
@@ -115,7 +116,7 @@ export const UserList = ({ users }) => {
   );
 
   return (
-    <View>
+    <>
       <FlatList
         data={users}
         renderItem={renderUserItem}
@@ -124,10 +125,10 @@ export const UserList = ({ users }) => {
       />
       <UserDetailModal
         visible={modalVisible}
-        closeModal={() => setModalVisible(false)}
+        closeModal={setModalVisible}
         userId={selectUserId}
       />
-    </View>
+    </>
   );
 };
 
