@@ -57,6 +57,7 @@ const getUserById = async (req, res) => {
 };
 
 const updateUserById = async (req, res) => {
+  console.log('Ingrese al user controller');
   try {
     const { id } = req.params;
     const { user_name, user_email, gender, address, user_role, active } =
@@ -72,12 +73,23 @@ const updateUserById = async (req, res) => {
     updateUser.user_role = user_role;
     updateUser.active = active;
 
-    const user = await userModel.findByIdAndUpdate(id, updateUser);
+    const user = await userModel.findByIdAndUpdate(id, updateUser, {new: true});
     console.log(user);
     res.status(200).json({ message: "User updated", user });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: "Error updating user" });
   }
 };
 
-module.exports = { createUser, getUsers, getUserById, updateUserById };
+const deleteUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await userModel.findByIdAndDelete(id);
+    res.status(200).json({ message: "User deleted", user });
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting user" });
+  }
+};
+
+module.exports = { createUser, getUsers, getUserById, updateUserById, deleteUserById };

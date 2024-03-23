@@ -1,6 +1,7 @@
-import React from "react";
-import { FlatList, StyleSheet, Text } from "react-native";
+import React, { useEffect, useState } from "react";
+import { FlatList, StyleSheet, Switch, Text, View } from "react-native";
 import { Avatar, ListItem } from "react-native-elements";
+import client from "../../../api/client";
 
 // Constants
 const BASE_URL = "http://192.168.1.9:3002";
@@ -10,6 +11,31 @@ const AVATAR_FALLBACK_URL =
 
 // Component
 export const UserList = ({ users }) => {
+  const [userSwitchState, setUserSwitchState] = useState({});
+
+  useEffect(() => {
+    const initialSwitchState = {};
+    users.forEach((user) => {
+      initialSwitchState[user._id] = user.active;
+    });
+    setUserSwitchState(initialSwitchState);
+  }, [users]);
+
+  const toggleSwitch = async (userId) => {
+    console.log("userId", userId);
+    if (typeof userId === "string" && userId.length > 0) {
+      setUserSwitchState((prevState) => ({
+        ...prevState,
+        [userId]: !prevState[userId],
+      }));
+      await client.patch(`/users/edit/${userId}`, {
+        active: !userSwitchState[userId],
+      });
+    } else {
+      console.log("Error al cambiar el estado del usuario");
+    }
+  };
+
   const renderUserItem = ({ item }) => (
     <ListItem
       bottomDivider
@@ -33,6 +59,15 @@ export const UserList = ({ users }) => {
           <ListItem.Subtitle>{item.user_role}</ListItem.Subtitle>
         )}
       </ListItem.Content>
+      <View style={styles.switchContainer}>
+        <Switch
+          trackColor={{ false: "#767577", true: "#767577" }}
+          thumbColor={userSwitchState[item._id] ? "#f5dd4b" : "#f4f3f4"}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={() => toggleSwitch(item._id)}
+          value={userSwitchState[item._id]}
+        />
+      </View>
     </ListItem>
   );
 
@@ -71,5 +106,8 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 12,
     color: "gray",
+  },
+  switchContainer: {
+    alignSelf: "center", // Centra el switch horizontalmente
   },
 });

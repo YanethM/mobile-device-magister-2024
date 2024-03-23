@@ -15,13 +15,15 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// http:localhost:3000/api/v1/users/new-user
+// http://localhost:3002/api/v1/users/new-user
 router.post("/new-user", upload.single("avatar"), userController.createUser);
-// http:localhost:3000/api/v1/users
+// http://localhost:3002/api/v1/users
 router.get("/", userController.getUsers);
-// http:localhost:3000/api/v1/users/id
+// http://localhost:3002/api/v1/users/id
 router.get("/:id", userController.getUserById);
-// http:localhost:3000/api/v1/users/edit/id
+// http://localhost:3002/api/v1/users/edit/id
 router.patch("/edit/:id", upload.single("avatar"), userController.updateUserById);
+// http://localhost:3002/api/v1/users/remove/id
+router.delete("/remove/:id", userController.deleteUserById);
 
 module.exports = router;
